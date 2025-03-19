@@ -417,6 +417,36 @@
         </div>
       </div>
     </section>
+
+    <!-- ✅ Fix JavaScript to Prevent Nicepage Errors -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const form = document.querySelector("form[name='contact']");
+      
+      form.addEventListener("submit", function(event) {
+          // Remove any previous error messages
+          document.querySelector(".u-form-send-error").style.display = "none";
+  
+          // Prevent default Nicepage validation (let Netlify handle it)
+          event.preventDefault();
+  
+          const formData = new FormData(form);
+  
+          fetch("/", {
+              method: "POST",
+              body: new URLSearchParams(formData).toString(),
+              headers: { "Content-Type": "application/x-www-form-urlencoded" }
+          })
+          .then(() => {
+              document.querySelector(".u-form-send-success").style.display = "block";
+              form.reset();
+          })
+          .catch(() => {
+              document.querySelector(".u-form-send-error").style.display = "block";
+          });
+      });
+  });
+  </script>
     
     
     
